@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script>
+        var idCounter = 0;
+        var data = {};
+
+        function addClass(){
+            idCounter++;
+            var html = "<p>CLASS " + idCounter + ": </p>";
+            html += "<input type='text' id='classname"+idCounter+"'>";
+            html += "<input type='text' id='classnum"+idCounter+"'>";
+            document.getElementById('classes').innerHTML += html;
+        }
+
+        function submit(){
+            for(let i = 1; i < idCounter + 1; i++){
+                let className = document.querySelector("#classname"+i).value;
+                let classNum = document.querySelector("#classnum"+i).value;
+                let name = 'class' + i;
+                data[name] = {
+                    className,
+                    classNum
+                }
+            }
+            document.getElementById('classes').innerHTML = "<p>searching</p>";
+            $.ajax({
+                url: "/getClass",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                cache: false,
+                complete: function() {
+                    console.log('dab');
+                },
+
+                success: function(data) {
+                    document.getElementById('classes').innerHTML = data.class1;
+                },
+
+                error: function() {
+                  console.log('process error');
+                },
+            })
+        }
+    </script> 
+</head>
+<body>
+    <div id="classes"></div>
+    <button onclick="addClass(); return false;">Add class</button> 
+    </br></br>
+    <button onclick="submit(); return false;">look for classes</button>
+</body>
+</html>
