@@ -1,0 +1,1 @@
+My attempt at making a web worker to scrape class availability through UNLV's garbage website. This project was made with nodejs and puppeteer. Initially worked with multiple classes, but ran into errors with concurrent browsing.
